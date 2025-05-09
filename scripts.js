@@ -102,8 +102,7 @@ function submitMatrix() {
     console.log('Матрица для Python:', matrix);
     
     const outputDiv = document.getElementById('output');
-    outputDiv.innerHTML = '<h3>Результат:</h3>' + 
-                         '<pre>' + JSON.stringify(matrix, null, 2) + '</pre>';
+    outputDiv.innerHTML = '<h3>Результат:</h3>' +  '<pre>' + JSON.stringify(matrix, null, 2) + '</pre>';
 }
 
 // данные матрицы
