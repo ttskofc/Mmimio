@@ -1,57 +1,102 @@
-:root{
-    --color-theme: rgb(51, 111, 255);
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wdth,wght@80.2,478&display=swap');
+
+:root {
+    --primary-color: #005875;
+    --secondary-color: rgba(120, 120, 128, 0.24);
+    --background-base: rgba(242, 242, 247, 0.8);
+    --text-primary: #ababab;
+    --text-secondary: #636366;
+    --blur-amount: 20px;
 }
 
+
+.open-sans {
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 478;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 80.2;
+  }
+
 body {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
+    font-family: sans-serif;
+    background: url("./emmeline-t-XkbUxBZcHtk-unsplash.jpg")
+        no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
     padding: 20px;
+    min-height: 100vh;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 30px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    background: rgba(255, 255, 255, 0.17);
 }
 
 h1 {
-    color: #333;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 25px;
     text-align: center;
+    color: var(--text-primary);
 }
 
 .controls {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #f5f5f5;
-    border-radius: 5px;
-    justify-content: center;
-}
-
-.controls--bottom{
     display: flex;
-    
+    flex-direction: column;
+    gap: 15px;
 }
 
-.matrix-container {
-    overflow-x: auto;
-    margin-bottom: 20px;
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-table {
-    border: none;
-    border-collapse: collapse;
-    margin: 0 auto;
+label {
+    font-size: 17px;
+    color: var(--text-primary);
+    font-weight: 500;
 }
 
-table tr td{
-    border: none;
+input[type="number"] {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--secondary-color);
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 17px;
+    color: var(--text-primary);
+    flex: 1;
+    transition: all 0.2s ease;
 }
 
-td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-
-input {
-    width: 50px;
-    padding: 5px;
-    text-align: center;
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.9);
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -64,30 +109,72 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
-.matrix-input {
-    width: 40px;
-    height: 20px;
-    padding: 5px;
-    text-align: center;
-    border: 1px solid black;
-    border-radius: 5px;
-}
 
 button {
-    background-color: var(--color-theme);
+    background: var(--primary-color);
     color: white;
-    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 17px;
+    font-weight: 500;
     cursor: pointer;
-    font-size: 16px;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
 }
 
 button:hover {
-    background-color: var(--color-theme);
+    background: rgb(0, 78, 155);
+    transform: translateY(-1px);
 }
 
-.size-input {
+button:active {
+    transform: translateY(0);
+}
+
+.matrix-container {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(var(--blur-amount));
+    padding: 10px;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 5px;
+    margin: 30px auto;
+}
+
+td {
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.matrix-input {
     width: 60px;
-    margin-right: 10px;
+    height: 60px;
+    padding: 0;
+    text-align: center;
+    font-size: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.matrix-input:focus {
+    background: rgba(255, 255, 255, 0.9);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+#output {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 14px;
+    backdrop-filter: blur(var(--blur-amount));
 }
