@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wdth,wght@80.2,478&display=swap');
 
 :root {
-    --primary-color: #005875;
+    --primary-color: #cf733e;
     --secondary-color: rgba(120, 120, 128, 0.24);
     --background-base: rgba(242, 242, 247, 0.8);
-    --text-primary: #ababab;
+    --text-primary: #767676;
     --text-secondary: #636366;
     --blur-amount: 20px;
 }
@@ -21,7 +21,7 @@
 
 body {
     font-family: sans-serif;
-    background: url("./emmeline-t-XkbUxBZcHtk-unsplash.jpg")
+    background: url("./6.jpg")
         no-repeat center center fixed;
     background-size: cover;
     margin: 0;
@@ -53,7 +53,7 @@ body {
 }
 
 .card:hover {
-    background: rgba(255, 255, 255, 0.17);
+    background: rgba(255, 255, 255, 0.13);
 }
 
 h1 {
@@ -95,15 +95,11 @@ input[type="number"] {
 
 input[type="number"]:focus {
     outline: none;
-    border-color: var(--primary-color);
-    background: rgba(255, 255, 255, 0.9);
+    /* border-color: var(--primary-color); */
+    border-color: transparent;
+    background: rgba(255, 255, 255, 1);
 }
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
 
 input[type="number"] {
     -moz-appearance: textfield;
@@ -136,7 +132,7 @@ button:active {
     overflow-x: auto;
     margin: 20px 0;
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(var(--blur-amount));
     padding: 10px;
 }
@@ -152,6 +148,11 @@ td {
     border-radius: 8px;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.6);
+}
+
+td:has(input:focus) {
+    transform: scale(1.05);
+    transition: 0.2s;
 }
 
 .matrix-input {
@@ -174,7 +175,7 @@ td {
 #output {
     margin-top: 20px;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 14px;
     backdrop-filter: blur(var(--blur-amount));
 }

@@ -97,13 +97,61 @@ function updateMatrixSize() {
 }
 
 // Отправлялка
-function submitMatrix() {
-    const matrix = getMatrixData();
-    console.log('Матрица для Python:', matrix);
+async function submitMatrix() {
+    const matrixData = getMatrixData();
+    const matrix = matrixData.matrix;
     
-    const outputDiv = document.getElementById('output');
-    outputDiv.innerHTML = '<h3>Результат:</h3>' +  '<pre>' + JSON.stringify(matrix, null, 2) + '</pre>';
+    try {
+        const response = await fetch('http://localhost:8000/solve-assignment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ matrix })
+        });
+        
+        const result = await response.json();
+        
+        if (result.status === "success") {
+            displayResult(result.result);
+        } else {
+            throw new Error(result.message);
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        const outputDiv = document.getElementById('output');
+        outputDiv.innerHTML = `
+            <div class="error-message">
+                Ошибка: ${error.message}
+            </div>
+        `;
+    }
 }
+
+function displayResult(result) {
+    const outputDiv = document.getElementById('output');
+    
+    const assignmentsHTML = result.assignments.map(a => `
+        <div class="assignment-item">
+            <span class="worker">Работник ${a.worker}</span>
+            <span class="arrow">→</span>
+            <span class="task">Задача ${a.task}</span>
+        </div>
+    `).join('');
+    
+    outputDiv.innerHTML = `
+        <h3>Результат: </h3>
+        <div class="result-card">
+            <div class="assignments-list">
+                ${assignmentsHTML}
+            </div>
+            <div class="total-cost">
+                Общие затраты: <strong>${result.total_cost}</strong>
+            </div>
+        </div>
+    `;
+}
+
 
 // данные матрицы
 function getMatrixData() {
@@ -119,7 +167,6 @@ function getMatrixData() {
     }
     
     return {
-        size: size,
         matrix: matrix
     };
 }
