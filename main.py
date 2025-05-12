@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
-from methodVetvei import branch_and_bound
+from methodVetvei import method_vetvei_i_granic
 import uvicorn
 
 app = FastAPI()
@@ -18,7 +18,7 @@ async def solve_assignment(data: dict = Body(...)):
     try:
         matrix = data.get("matrix")
         
-        result = branch_and_bound(matrix)
+        result = method_vetvei_i_granic(matrix)
         return {"status": "success", "result": result}
         
     except Exception as e:

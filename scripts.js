@@ -136,7 +136,7 @@ function displayResult(result) {
         <div class="assignment-item">
             <span class="worker">Работник ${a.worker}</span>
             <span class="arrow">→</span>
-            <span class="task">Задача ${a.task}</span>
+            <span class="task">Задача ${a.job}</span>
         </div>
     `).join('');
     
