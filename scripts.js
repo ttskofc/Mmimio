@@ -107,9 +107,10 @@ async function submitMatrix() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ matrix })
+            body: JSON.stringify({matrix})
         });
         
+        // alert(JSON.stringify( matrix ))
         const result = await response.json();
         
         if (result.status === "success") {

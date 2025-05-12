@@ -1,7 +1,5 @@
 import heapq
 
-
-
 class Node:
     def __init__(self, matrix, assigned, bound, path_cost, n):
         self.matrix = matrix
@@ -13,9 +11,9 @@ class Node:
         return self.bound < other.bound
 
 
-
-
-def reduce_matrix(matrix):
+def reduce_matrix(matrix): 
+    """Редукция матрицы. принимаем матрицу, и вычетаем минимальные элементы из строк и столбцов, 
+    так же возвращаем нижнюю оценку стоимости решения."""
     n = len(matrix)
     reduced = [row[:] for row in matrix]
     row_mins = []
@@ -48,11 +46,14 @@ def reduce_matrix(matrix):
     return reduced, total
 
 
+# ----------------------------------------
 
-def calculate_theta(matrix, i, j):
+
+def calculate_teta(matrix, i, j):
+    """Вычислет оценку. передается претендент и возвращается его оценка"""
     n = len(matrix)
     row = [matrix[i][col] for col in range(n) if col != j]
-    col_vals = [matrix[row_idx][j] for row_idx in range(n) if row_idx != i]
+    col_vals = [matrix[row][j] for row in range(n) if row != i]
     return (min(row) if row else 0) + (min(col_vals) if col_vals else 0)
 
 
@@ -84,11 +85,11 @@ def branch_and_bound(original_matrix):
         zeros = [(i, j) for i in range(n) for j in range(n) if current.matrix[i][j] == 0]
         if not zeros:
             continue
-        theta_vals = []
+        teta_vals = []
 
         for (i, j) in zeros:
-            theta_vals.append((calculate_theta(current.matrix, i, j), i, j))
-        _, i, j = max(theta_vals, key=lambda x: x[0])
+            teta_vals.append((calculate_teta(current.matrix, i, j), i, j))
+        _, i, j = max(teta_vals, key=lambda x: x[0])
         # Ветвь "включить (i,j)"
         new_assigned = current.assigned + [(i, j)]
         new_path_cost = current.path_cost + original_matrix[i][j]
