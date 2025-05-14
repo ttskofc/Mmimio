@@ -110,7 +110,7 @@ async function submitMatrix() {
 
     try {
         const response = await fetch(
-            "http://188.43.246.90:8000/solve-assignment",
+            "https://mmimio.onrender.com/solve-assignment",
             {
                 method: "POST",
                 headers: {
