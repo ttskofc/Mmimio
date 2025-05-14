@@ -33,19 +33,21 @@ function createMatrix(size) {
             const input = document.createElement("input");
             input.type = "number";
             input.className = "matrix-input";
-            input.value = "";
-            input.placeholder = "0";
+            input.placeholder = "0"; // Показывает "0" как подсказку
+            input.value = ""; // Само поле изначально пустое
             input.dataset.row = i;
             input.dataset.col = j;
+
+            // При потере фокуса, если поле пустое, показываем placeholder снова
+            input.addEventListener("blur", function () {
+                if (this.value === "") {
+                    this.placeholder = "0";
+                }
+            });
+
+            cell.appendChild(input);
+            row.appendChild(cell);
         }
-        
-        input.addEventListener("blur", function () {
-            if (this.value === "") {
-                this.placeholder = "0";
-            }
-        });
-        cell.appendChild(input);
-        row.appendChild(cell);
 
         table.appendChild(row);
     }
