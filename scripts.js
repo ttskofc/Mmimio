@@ -37,15 +37,15 @@ function createMatrix(size) {
             input.placeholder = "0";
             input.dataset.row = i;
             input.dataset.col = j;
-            cell.appendChild(input);
-            row.appendChild(cell);
         }
-
+        
         input.addEventListener("blur", function () {
             if (this.value === "") {
                 this.placeholder = "0";
             }
         });
+        cell.appendChild(input);
+        row.appendChild(cell);
 
         table.appendChild(row);
     }
