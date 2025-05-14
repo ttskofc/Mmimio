@@ -114,7 +114,8 @@ def method_vetvei_i_granic(original_matrix):
         _, i, j = max(theta_vals, key=lambda x: x[0])
 
 
-# =============
+        # =============
+        
         # Ветка - включаем пару. назначаем пару и приводим матрицу
         new_assigned = current.assigned + [(i, j)]
         new_path_cost = current.path_cost + original_matrix[i][j]
@@ -132,7 +133,8 @@ def method_vetvei_i_granic(original_matrix):
             nodes.append(Node(prived_inc, new_assigned, inc_bound, new_path_cost))
 
 
-# ===============
+        # ===============
+
         # Ветка исключаем пару. помечаем клетку как недоступную и приводим
         exclude_matrix = [row[:] for row in current.matrix]
         exclude_matrix[i][j] = float('inf')

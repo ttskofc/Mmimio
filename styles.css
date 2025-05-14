@@ -54,6 +54,7 @@ body {
 
 .card:hover {
     background: rgba(255, 255, 255, 0.13);
+    transform: scale(1.01);
 }
 
 h1 {
@@ -120,7 +121,7 @@ button {
 }
 
 button:hover {
-    background: rgb(0, 78, 155);
+    background: #8d4a23;
     transform: translateY(-1px);
 }
 
