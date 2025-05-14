@@ -33,12 +33,19 @@ function createMatrix(size) {
             const input = document.createElement("input");
             input.type = "number";
             input.className = "matrix-input";
-            input.value = "0";
+            input.value = "";
+            input.placeholder = "0";
             input.dataset.row = i;
             input.dataset.col = j;
             cell.appendChild(input);
             row.appendChild(cell);
         }
+
+        input.addEventListener("blur", function () {
+            if (this.value === "") {
+                this.placeholder = "0";
+            }
+        });
 
         table.appendChild(row);
     }
