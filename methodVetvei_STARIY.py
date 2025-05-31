@@ -159,7 +159,7 @@ def method_vetvei_i_granic(original_matrix):
 
 # # Проверка:
 
-# a = [[1, 3, 5],
-#      [2, 1, 7], 
-#      [4, 5, 2]]
-# print(method_vetvei_i_granic(a))
+a = [[1, 3, 5],
+     [2, 1, 7], 
+     [4, 5, 2]]
+print(method_vetvei_i_granic(a))

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
-from methodVetvei import method_vetvei_i_granic
+from method import method_vetvei_i_granic
 import uvicorn
 
 app = FastAPI()

@@ -33,12 +33,11 @@ function createMatrix(size) {
             const input = document.createElement("input");
             input.type = "number";
             input.className = "matrix-input";
-            input.placeholder = "0"; // Показывает "0" как подсказку
-            input.value = ""; // Само поле изначально пустое
+            input.placeholder = "0"; 
+            input.value = ""; 
             input.dataset.row = i;
             input.dataset.col = j;
 
-            // При потере фокуса, если поле пустое, показываем placeholder снова
             input.addEventListener("blur", function () {
                 if (this.value === "") {
                     this.placeholder = "0";
@@ -114,58 +113,144 @@ function updateMatrixSize() {
 
 // Отправлялка
 async function submitMatrix() {
-    const matrixData = getMatrixData();
-    const matrix = matrixData.matrix;
-
     try {
+        const matrixData = getMatrixData();
+        const matrix = matrixData.matrix;
+        console.log("Проверка matrix:", matrix);
+        console.log("JSON:", JSON.stringify({ matrix }));
+
         const response = await fetch(
-            "https://mmimio.onrender.com/solve-assignment",
+            "http://localhost:8000/solve-assignment",
             {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ matrix }),
             }
         );
 
-        // alert(JSON.stringify( matrix ))
-        const result = await response.json();
-
-        if (result.status === "success") {
-            displayResult(result.result);
-        } else {
-            throw new Error(result.message);
+        if (!response.ok) {
+            // Обработка 422 и других ошибок
+            let errorMsg = `HTTP ${response.status}: ${response.statusText}`;
+            try {
+                const errorData = await response.json();
+                errorMsg += ` - ${JSON.stringify(errorData.detail || errorData)}`;
+            } catch {
+                const text = await response.text();
+                errorMsg += ` - ${text}`;
+            }
+            throw new Error(errorMsg);
         }
+
+        const result = await response.json();
+        displayResult(result.result);
+        
     } catch (error) {
         console.error("Ошибка:", error);
         const outputDiv = document.getElementById("output");
-        outputDiv.innerHTML = `
-            <div class="error-message">
-                Ошибка: ${error.message}
-            </div>
-        `;
+        outputDiv.innerHTML = `<div class="error">${error.message}</div>`;
     }
 }
 
+
+
+function renderStep(step, index) {
+    const stepCard = document.createElement('div');
+    stepCard.className = 'step-card';
+
+    const title = `<h4>Шаг ${index + 1} — нижняя граница: ${step.bound}</h4>`;
+    const matrixHTML = renderStepMatrix(
+        step.matrix,
+        step.remaining_rows,
+        step.remaining_cols,
+        step.choice // передаём сюда choice
+    );
+
+    stepCard.innerHTML = title + matrixHTML;
+    return stepCard;
+}
+
+
+
+//  функция для отображения матрицы шага
+function renderStepMatrix(matrix, remaining_rows, remaining_cols, choice) {
+    if (!matrix || matrix.length === 0) return '';
+    
+    // Создаем матрицу с оригинальными индексами
+    let fullMatrix = [];
+    for (let i = 0; i < remaining_rows.length; i++) {
+        fullMatrix[i] = [];
+        for (let j = 0; j < remaining_cols.length; j++) {
+            fullMatrix[i][j] = matrix[i][j];
+        }
+    }
+    
+    // Генерация таблицы
+    let tableHTML = '<table class="step-matrix">';
+    fullMatrix.forEach((row, i) => {
+        tableHTML += '<tr>';
+        row.forEach((cell, j) => {
+            let isChosen = false;
+            if (choice && remaining_rows[i] === choice[0] && remaining_cols[j] === choice[1]) {
+                isChosen = true;
+            }
+            const cellClass = isChosen ? 'chosen' : '';
+            tableHTML += `<td class="${cellClass}">${cell === null ? '∞' : cell}</td>`;
+        });
+        tableHTML += '</tr>';
+    });
+    tableHTML += '</table>';
+    return tableHTML;
+}
+
+
+
+
+// Новая функция для форматирования назначений
+function formatAssignments(assignments) {
+    if (!assignments || assignments.length === 0) return 'нет';
+    return assignments.map(a => `(${a[0] + 1},${a[1] + 1})`).join(', ');
+}
+
+
+
 function displayResult(result) {
     const outputDiv = document.getElementById("output");
-
-    const assignmentsHTML = result.assignments
-        .map(
-            (a) => `
+    
+    // Отображение финального результата
+    const assignmentsHTML = result.assignments.map(a => `
         <div class="assignment-item">
             <span class="worker">Работник ${a.worker}</span>
             <span class="arrow">→</span>
             <span class="task">Задача ${a.job}</span>
         </div>
-    `
-        )
-        .join("");
+    `).join('');
+
+    // Отображение шагов решения
+    let stepsHTML = '<div class="steps-container"><h3>Шаги решения:</h3>';
+    result.steps.forEach((step, index) => {
+        stepsHTML += `
+        <div class="step-card">
+            <h4>Шаг ${index + 1}</h4>
+            <p><strong>Текущие назначения:</strong> ${formatAssignments(step.assigned)}</p>
+            <p><strong>Нижняя граница:</strong> ${step.bound}</p>
+            ${step.choice ? `<p><strong>Выбранный ноль:</strong> (${step.choice[0] + 1}, ${step.choice[1] + 1})</p>` : ''}
+            ${step.matrix ? `
+                <div class="matrix-wrapper">${
+                    renderStepMatrix(
+                        step.matrix, 
+                        step.remaining_rows, 
+                        step.remaining_cols, 
+                        step.choice
+                    )
+                }</div>
+            ` : ''}
+        </div>`;
+    });
+    stepsHTML += '</div>';
 
     outputDiv.innerHTML = `
-        <h3>Результат: </h3>
-        <div class="result-card">
+        <div class="result-section">
+            <h3>Оптимальное назначение:</h3>
             <div class="assignments-list">
                 ${assignmentsHTML}
             </div>
@@ -173,6 +258,7 @@ function displayResult(result) {
                 Общие затраты: <strong>${result.total_cost}</strong>
             </div>
         </div>
+        ${stepsHTML}
     `;
 }
 
@@ -187,11 +273,16 @@ function getMatrixData() {
             const input = document.querySelector(
                 `.matrix-input[data-row="${i}"][data-col="${j}"]`
             );
-            matrix[i][j] = parseFloat(input.value) || 0;
+            // Явное преобразование в число
+            const value = input.value.trim();
+            matrix[i][j] = value === "" ? 0 : Number(value);
+            
+            // Проверка на NaN
+            if (isNaN(matrix[i][j])) {
+                throw new Error(`Некорректное значение в строке ${i+1}, столбце ${j+1}: "${input.value}"`);
+            }
         }
     }
 
-    return {
-        matrix: matrix,
-    };
+    return { matrix };
 }
