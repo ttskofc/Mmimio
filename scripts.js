@@ -162,7 +162,7 @@ function renderStep(step, index) {
         step.matrix,
         step.remaining_rows,
         step.remaining_cols,
-        step.choice // передаём сюда choice
+        step.choice 
     );
 
     stepCard.innerHTML = title + matrixHTML;
@@ -175,7 +175,6 @@ function renderStep(step, index) {
 function renderStepMatrix(matrix, remaining_rows, remaining_cols, choice) {
     if (!matrix || matrix.length === 0) return '';
     
-    // Создаем матрицу с оригинальными индексами
     let fullMatrix = [];
     for (let i = 0; i < remaining_rows.length; i++) {
         fullMatrix[i] = [];
@@ -184,7 +183,6 @@ function renderStepMatrix(matrix, remaining_rows, remaining_cols, choice) {
         }
     }
     
-    // Генерация таблицы
     let tableHTML = '<table class="step-matrix">';
     fullMatrix.forEach((row, i) => {
         tableHTML += '<tr>';
@@ -205,7 +203,6 @@ function renderStepMatrix(matrix, remaining_rows, remaining_cols, choice) {
 
 
 
-// Новая функция для форматирования назначений
 function formatAssignments(assignments) {
     if (!assignments || assignments.length === 0) return 'нет';
     return assignments.map(a => `(${a[0] + 1},${a[1] + 1})`).join(', ');
@@ -216,7 +213,6 @@ function formatAssignments(assignments) {
 function displayResult(result) {
     const outputDiv = document.getElementById("output");
     
-    // Отображение финального результата
     const assignmentsHTML = result.assignments.map(a => `
         <div class="assignment-item">
             <span class="worker">Работник ${a.worker}</span>
@@ -225,7 +221,6 @@ function displayResult(result) {
         </div>
     `).join('');
 
-    // Отображение шагов решения
     let stepsHTML = '<div class="steps-container"><h3>Шаги решения:</h3>';
     result.steps.forEach((step, index) => {
         stepsHTML += `

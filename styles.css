@@ -183,8 +183,6 @@ td:has(input:focus) {
 }
 
 
-/* Добавьте в конец файла */
-
 .steps-container {
     margin-top: 2rem;
 }

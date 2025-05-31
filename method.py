@@ -65,7 +65,6 @@ def filter_null_rows_cols(matrix):
         if any(cell is not None for cell in matrix[i]):
             filtered_rows.append(matrix[i])
     
-    # Удаляем столбцы, полностью состоящие из None
     if not filtered_rows:
         return [], [], []
     
