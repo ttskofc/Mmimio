@@ -120,7 +120,7 @@ async function submitMatrix() {
         console.log("JSON:", JSON.stringify({ matrix }));
 
         const response = await fetch(
-            "http://localhost:8000/solve-assignment",
+            "https://mmimio.onrender.com/solve-assignment",
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
